@@ -41,7 +41,7 @@ function selectAnswer(e) {
     }
     setStatusClass(document.body, correct);
     Array.from(answerBtnsEl.children).forEach(button => {
-      setStatusClass(button, button.dataset.correct);
+      setStatusClass(button, correct);
     })
     console.log(shuffledQuestions.length);
     console.log(currentQuestionIndex);
@@ -116,6 +116,7 @@ function startQuiz() {
     shuffledQuestions = questionListArry.sort(() => Math.random() - .5);
     currentQuestionIndex = 0;
     questionContainerEl.classList.remove('hide');
+    document.querySelector('.score').classList.remove('hide');
     setNextQuestion();
     countdown(); //start out timer
     

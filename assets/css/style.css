@@ -41,13 +41,19 @@ main.center{
     box-shadow: 0 0 10px 2px;
 }
 
+.card-body h1 {
+    border-bottom: 2px solid gray;
+    font-size: 65px;
+}
+
+.card-body p {
+    font-size: 30px;
+}
+
 #question{
     font-size: 25px;
     text-align: center;
 }
-
-.score {}
-
   
 .btn-grid {
     display: grid;
@@ -63,7 +69,6 @@ main.center{
     font-size: 1.5rem;
     font-weight: bold;
     padding: 10px 20px;
-    margin: 0 auto;
 }
   
 .hide {

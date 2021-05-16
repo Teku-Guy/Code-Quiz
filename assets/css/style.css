@@ -24,8 +24,7 @@
   }
   
   .container {
-    width: 800px;
-    max-width: 80%;
+    height: 40vw;
     background-color: white;
     border-radius: 5px;
     padding: 10px;
@@ -43,25 +42,11 @@
     border-color: black;
   }
   
-  .btn.correct {
-    --hue: var(--hue-correct);
-    color: black;
-  }
-  
-  .btn.wrong {
-    --hue: var(--hue-wrong);
-  }
-  
-  .start-btn, .next-btn {
+  .start-btn {
     font-size: 1.5rem;
     font-weight: bold;
     padding: 10px 20px;
-  }
-  
-  .controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    margin: 0 auto;
   }
   
   .hide {

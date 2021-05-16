@@ -3,6 +3,7 @@ const startBtn = document.querySelector('#start-btn');
 const questionContainerEl = document.querySelector('#question-container');
 const questionEl = document.querySelector('#question');
 const answerBtnsEl = document.querySelector('#answer-btns');
+const welcomeEl = document.querySelector('#welcome');
 
 let shuffledQuestions, currentQuestionIndex;
 
@@ -31,6 +32,8 @@ function selectAnswer(e) {
     console.log(shuffledQuestions[currentQuestionIndex].correctAnswer + selectedButton);
     if(shuffledQuestions[currentQuestionIndex].correctAnswer === selectedButton){
         correct = true;
+        currentScore += points;
+        console.log(currentScore);
     } else {
         correct = false;
     }
@@ -38,18 +41,19 @@ function selectAnswer(e) {
     Array.from(answerBtnsEl.children).forEach(button => {
       setStatusClass(button, button.dataset.correct);
     })
+    console.log(shuffledQuestions.length);
+    console.log(currentQuestionIndex);
     if (shuffledQuestions.length > currentQuestionIndex + 1) {
       //nextButton.classList.remove('hide')
         currentQuestionIndex++;
         setNextQuestion();
     } else {
-      startBtn.innerText = 'Restart';
-      startBtn.classList.remove('hide');
+        alert();
     }
 }
   
 function setStatusClass(element, correct) {
-    clearStatusClass(element)
+    //clearStatusClass(element)
     if (correct) {
       element.classList.add('correct');
     } else {
@@ -64,7 +68,6 @@ function clearStatusClass(element) {
   
 
 function resetState() {
-    clearStatusClass(document.body);
     //startBtn.classList.add('hide');
     while (answerBtnsEl.firstChild) {
         answerBtnsEl.removeChild(answerBtnsEl.firstChild);
@@ -92,9 +95,15 @@ function renderQuestion(questionArry) {
     }
 }
 
+function setScore(){
+    if(currentScore > currentHighScore){
+        currentHighScore = currentScore;
+    } 
+}
+
 function startQuiz() {
     timeLeft = 5; //reset timer
-    startBtn.classList.add('hide');
+    welcomeEl.classList.add('hide')
     shuffledQuestions = questionListArry.sort(() => Math.random() - .5);
     currentQuestionIndex = 0;
     questionContainerEl.classList.remove('hide');

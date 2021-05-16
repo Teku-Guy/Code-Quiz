@@ -4,6 +4,7 @@ const questionContainerEl = document.querySelector('#question-container');
 const questionEl = document.querySelector('#question');
 const answerBtnsEl = document.querySelector('#answer-btns');
 const welcomeEl = document.querySelector('#welcome');
+const scoreEl = document.querySelector('#currentScore');
 
 let shuffledQuestions, currentQuestionIndex;
 
@@ -32,7 +33,7 @@ function selectAnswer(e) {
     console.log(shuffledQuestions[currentQuestionIndex].correctAnswer + selectedButton);
     if(shuffledQuestions[currentQuestionIndex].correctAnswer === selectedButton){
         correct = true;
-        currentScore += points;
+        setScore(correct);
         console.log(currentScore);
     } else {
         correct = false;
@@ -43,12 +44,24 @@ function selectAnswer(e) {
     })
     console.log(shuffledQuestions.length);
     console.log(currentQuestionIndex);
+
+    scoreEl.innerText = currentScore;
+
     if (shuffledQuestions.length > currentQuestionIndex + 1) {
       //nextButton.classList.remove('hide')
         currentQuestionIndex++;
         setNextQuestion();
     } else {
         alert();
+    }
+}
+
+function setScore(answer){
+    if(answer){
+        currentScore += points;
+    }
+    if(currentScore > currentHighScore){
+        currentHighScore = currentScore;
     }
 }
   
@@ -93,12 +106,6 @@ function renderQuestion(questionArry) {
         btn.addEventListener('click', selectAnswer);
         answerBtnsEl.appendChild(btn);
     }
-}
-
-function setScore(){
-    if(currentScore > currentHighScore){
-        currentHighScore = currentScore;
-    } 
 }
 
 function startQuiz() {

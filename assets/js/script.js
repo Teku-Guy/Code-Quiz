@@ -53,7 +53,7 @@ function selectAnswer(e) {
         currentQuestionIndex++;
         setNextQuestion();
     } else {
-        alert();
+        //alert();
     }
 }
 

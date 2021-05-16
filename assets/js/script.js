@@ -6,6 +6,7 @@ const answerBtnsEl = document.querySelector('#answer-btns');
 const welcomeEl = document.querySelector('#welcome');
 const scoreEl = document.querySelector('#currentScore');
 
+let gameState = false;
 let shuffledQuestions, currentQuestionIndex;
 
 let timeLeft = 5;
@@ -109,6 +110,7 @@ function renderQuestion(questionArry) {
 }
 
 function startQuiz() {
+    gameState = true;
     timeLeft = 5; //reset timer
     welcomeEl.classList.add('hide')
     shuffledQuestions = questionListArry.sort(() => Math.random() - .5);

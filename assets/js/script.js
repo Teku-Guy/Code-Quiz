@@ -4,7 +4,12 @@ const questionContainerEl = document.querySelector('#question-container');
 const questionEl = document.querySelector('#question');
 const answerBtnsEl = document.querySelector('#answer-btns');
 const welcomeEl = document.querySelector('#welcome');
-const scoreEl = document.querySelector('#currentScore');
+const scoreEl = document.querySelector('.score');
+const currentScoreEl = document.querySelector('#currentScore');
+const finalScore = document.querySelector('#final-score');
+const highscoreFormEL = document.querySelector('#highscore-form');
+const endGameEl = document.querySelector('#end-game');
+const inputGroupEl = document.querySelector('.input-group');
 
 let gameState = false;
 let shuffledQuestions, currentQuestionIndex;
@@ -14,60 +19,79 @@ let points = 10;
 let currentScore = 0;
 let currentHighScore;
 
-const stopCountdown = () => {
-    clearInterval(countdown.interval);
-};
-
 const countdown = () => {
+    timeLeft = 5;
     var interval = setInterval(function(){
         timerEl.innerHTML = timeLeft;
         timeLeft--;
         if (timeLeft === 0){
             clearInterval(interval);
+            gameState = false;
+            endGame();
         }
     }, 1000);
 };
 
+var submitHighScore = function(event) {
+    event.preventDefault();
+
+    var listItemEl = document.createElement("li"); 
+    listItemEl.className = "Test"; 
+    listItemEl.textContent = "this is a test"; 
+    highscoreFormEL.appendChild(listItemEl);
+    inputGroupEl.classList.add('hide');
+}
+
 function selectAnswer(e) {
     const selectedButton = e.target.id;
     let correct = false;
-    console.log(shuffledQuestions[currentQuestionIndex].correctAnswer + selectedButton);
     if(shuffledQuestions[currentQuestionIndex].correctAnswer === selectedButton){
         correct = true;
         setScore(correct);
-        console.log(currentScore);
     } else {
         correct = false;
+        setScore(correct);
     }
-    setStatusClass(document.body, correct);
+    setStatusClass(scoreEl, correct);
     Array.from(answerBtnsEl.children).forEach(button => {
       setStatusClass(button, correct);
-    })
-    console.log(shuffledQuestions.length);
-    console.log(currentQuestionIndex);
+    });
 
-    scoreEl.innerText = currentScore;
+    console.log(currentScoreEl.innerText);
 
     if (shuffledQuestions.length > currentQuestionIndex + 1) {
-      //nextButton.classList.remove('hide')
         currentQuestionIndex++;
         setNextQuestion();
     } else {
-        //alert();
+        gameState = false;
+        endGame();
     }
 }
 
-function setScore(answer){
-    if(answer){
-        currentScore += points;
+function endGame() {
+    if(!gameState){
+        questionContainerEl.classList.add('hide');
+        scoreEl.classList.add('hide');
+        endGameEl.classList.remove('hide');
+        finalScore.innerText = currentScore;
+        //window.location = "./highscores.html";
     }
+    
     if(currentScore > currentHighScore){
         currentHighScore = currentScore;
+    }
+    
+}
+
+function setScore(a){
+    if(a){
+        debugger;
+        currentScore += points;
+        currentScoreEl.innerText = currentScore;
     }
 }
   
 function setStatusClass(element, correct) {
-    //clearStatusClass(element)
     if (correct) {
       element.classList.add('correct');
     } else {
@@ -102,7 +126,6 @@ function renderQuestion(questionArry) {
         btn.classList.add('btn');
         btn.classList.add('btn-primary');
         btn.setAttribute('id', letter);
-        console.log(questionArry.answers[letter]);
 
         btn.addEventListener('click', selectAnswer);
         answerBtnsEl.appendChild(btn);
@@ -111,18 +134,18 @@ function renderQuestion(questionArry) {
 
 function startQuiz() {
     gameState = true;
-    timeLeft = 5; //reset timer
+    countdown(); //start out timer
     welcomeEl.classList.add('hide')
     shuffledQuestions = questionListArry.sort(() => Math.random() - .5);
+    scoreEl.classList.remove('hide');
     currentQuestionIndex = 0;
     questionContainerEl.classList.remove('hide');
-    document.querySelector('.score').classList.remove('hide');
     setNextQuestion();
-    countdown(); //start out timer
     
 }
 
 startBtn.addEventListener('click', startQuiz);
+highscoreFormEL.addEventListener('submit', submitHighScore);
 
 const questionListArry = [
     // {

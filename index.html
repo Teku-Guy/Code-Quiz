@@ -13,7 +13,7 @@
         <!-- Nav -->
         <nav class="navbar navbar-dark bg-dark">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" href="./highscores.html">
                     <button type="button" class="btn btn-outline-success scores">View Highscores</button>
                 </a>
                     <div class="d-flex justify-content-between">
@@ -45,6 +45,26 @@
                                 Test you knowledge or that of your peers...</p>
                                 <div class="text-center">
                                     <button id="start-btn" class="btn btn-primary start-btn">Start</button>
+                                </div>
+                        </div>
+                    </div>
+
+                    <div class="card hide" id="end-game">
+                        <div class="card-body">
+                            <h1 class="card-title text-center">Game Over!</h1>
+                            <p class="card-text text-center" id="highscore"></p>
+                                <div class="text-center" id="timer-text">
+                                    <h2 class="user-score">
+                                        Your Final Score: <span id="final-score">0</span>
+                                    </h2>
+                                    <form id="highscore-form">
+                                        <div class="input-group mb-3">
+                                            <input type="text" class="form-control" placeholder="Enter your Initials here" aria-label="Input Name" aria-describedby="username's-highscore">
+                                            <div class="input-group-append">
+                                            <button id="highscore-submit" class="btn btn-outline-secondary" type="submit">Submit</button>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
                         </div>
                     </div>

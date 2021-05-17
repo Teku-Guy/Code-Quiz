@@ -27,10 +27,12 @@ main.center{
   
 .correct {
     --hue: var(--hue-correct);
+    color: hsl(var(--hue), 100%, 40%);
   }
   
 .wrong {
     --hue: var(--hue-wrong);
+    color: hsl(var(--hue), 100%, 50%);
 }
   
 .content {
@@ -51,7 +53,7 @@ main.center{
 }
 
 #question{
-    font-size: 25px;
+    font-size: 30px;
     text-align: center;
 }
   
@@ -73,4 +75,8 @@ main.center{
   
 .hide {
     display: none;
+}
+
+.score{
+    font-size: 30px;
 }

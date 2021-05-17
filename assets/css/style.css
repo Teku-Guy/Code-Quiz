@@ -80,3 +80,11 @@ main.center{
 .score{
     font-size: 30px;
 }
+
+.user-info{
+    font-size: 25px;
+}
+
+.bg-secondary{
+    background-color: #b23cfd!important;
+}

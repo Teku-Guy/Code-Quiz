@@ -7,40 +7,77 @@ const welcomeEl = document.querySelector('#welcome');
 const scoreEl = document.querySelector('.score');
 const currentScoreEl = document.querySelector('#currentScore');
 const finalScore = document.querySelector('#final-score');
-const highscoreFormEL = document.querySelector('#highscore-form');
+const highscoreFormEl = document.querySelector('#highscore-form');
 const endGameEl = document.querySelector('#end-game');
 const inputGroupEl = document.querySelector('.input-group');
 
 let gameState = false;
-let shuffledQuestions, currentQuestionIndex;
+let shuffledQuestions, currentQuestionIndex, userName, userScore;
 
-let timeLeft = 5;
+let userNameArry = JSON.parse(localStorage.getItem("userName") || "[]");
+let userScoreArry = JSON.parse(localStorage.getItem("userScore") || "[]");
+
+let timeLeft = 10;
 let points = 10;
 let currentScore = 0;
 let currentHighScore;
+let interval 
 
-const countdown = () => {
-    timeLeft = 5;
-    var interval = setInterval(function(){
-        timerEl.innerHTML = timeLeft;
-        timeLeft--;
-        if (timeLeft === 0){
-            clearInterval(interval);
-            gameState = false;
-            endGame();
+let startTimer = function() {
+    timerEl.innerText = timeLeft;
+    timeLeft--;
+    if (timeLeft === 0 || !gameState){
+        clearInterval(interval);
+        endGame();
+        // //} else if (){
+        //     debugger;
+        //     clearInterval(interval);
+        //     timerEl.innerText = 0;
+        //     return endGame(false);
+        //     console.log(shuffledQuestions.length + " " + (currentQuestionIndex + 1));
         }
-    }, 1000);
+}
+
+let countdown = () => {
+    interval = setInterval(startTimer, 1000);   
 };
 
-var submitHighScore = function(event) {
+let highScoreHandler = function(event) {
     event.preventDefault();
 
-    var listItemEl = document.createElement("li"); 
-    listItemEl.className = "Test"; 
-    listItemEl.textContent = "this is a test"; 
-    highscoreFormEL.appendChild(listItemEl);
-    inputGroupEl.classList.add('hide');
-}
+    const usernameInput = document.querySelector("input[name='user-name']").value;
+    if (usernameInput === "") {
+        alert("You need to fill out your username in form!");
+        return false;
+    }
+
+    let hsDataObj = {
+        username: usernameInput,
+        score: currentScore
+    };
+
+    submitHighScore(hsDataObj);
+
+    
+};
+
+let submitHighScore = function(obj) {
+    let unorderedListEl = document.createElement('ul');
+    unorderedListEl.className = "list-group";
+    let listItemEl = document.createElement('li');
+    listItemEl.className = "list-group-item d-flex justify-content-between align-items-center user-info";
+    listItemEl.innerHTML = obj.username + "<span class='badge bg-secondary' id='user-score'>" + obj.score + "</span>";
+
+    unorderedListEl.appendChild(listItemEl);
+    highscoreFormEl.appendChild(unorderedListEl);
+
+    
+    userNameArry.push(obj.username);
+    userScoreArry.push(obj.score);
+
+    userName = localStorage.setItem('userName', JSON.stringify(userNameArry));
+    userScore = localStorage.setItem('userScore', JSON.stringify(userScoreArry));
+};
 
 function selectAnswer(e) {
     const selectedButton = e.target.id;
@@ -70,22 +107,40 @@ function selectAnswer(e) {
 
 function endGame() {
     if(!gameState){
+        timerEl.innerText = 0;
         questionContainerEl.classList.add('hide');
         scoreEl.classList.add('hide');
         endGameEl.classList.remove('hide');
         finalScore.innerText = currentScore;
+
         //window.location = "./highscores.html";
     }
-    
-    if(currentScore > currentHighScore){
-        currentHighScore = currentScore;
+    if(userName !== null && userScore !== null){
+        let prevScoreInfoEl = document.createElement("div");
+        prevScoreInfoEl.className = "card";
+        prevScoreInfoEl.innerHTML = "<div class='card-body'> <h1 class='card-title text-center'>Previous Scores</h1>  </div>";
+        
+        let prevHsListEl = document.createElement("ul");
+        prevHsListEl.className = "list-group";
+        
+        debugger;
+        for(var i = userNameArry.length - 1; i >= 0; i--){
+            debugger;
+            let prevListItemEl = document.createElement('li');
+            prevListItemEl.className = "list-group-item d-flex justify-content-between align-items-center user-info";
+            prevListItemEl.innerHTML = userNameArry[i] + "<span class='badge bg-secondary' id='user-score'>" + userScoreArry[i] + "</span>";
+            console.log(userNameArry[i]);
+            prevHsListEl.appendChild(prevListItemEl);
+        }
+        
+        prevScoreInfoEl.appendChild(prevHsListEl);
+        endGameEl.appendChild(prevScoreInfoEl);
     }
     
 }
 
 function setScore(a){
     if(a){
-        debugger;
         currentScore += points;
         currentScoreEl.innerText = currentScore;
     }
@@ -145,7 +200,7 @@ function startQuiz() {
 }
 
 startBtn.addEventListener('click', startQuiz);
-highscoreFormEL.addEventListener('submit', submitHighScore);
+highscoreFormEl.addEventListener('submit', highScoreHandler);
 
 const questionListArry = [
     // {
